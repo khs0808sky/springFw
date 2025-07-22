@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd 
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+	
+	<!-- 핵심 관심사 : Target Objecet -->
+	<bean id="helloService" class="app.labs.ex04.aop01.HelloService" />
+	<!-- <bean id="helloService" class="app.labs.ex04.aop01.HelloServiceProxy" /> -->
+	
+	
+	<bean id="helloController" class="app.labs.ex04.aop01.HelloController" >
+		<property name="helloService" ref="helloService" />
+	</bean>
+	
+	<!-- 공통관심사 : Aspect -->
+	<bean id="helloLog" class="app.labs.ex04.aop01.HelloLog" />
+	
+	<!-- AOP 설정 : 공통 관심사를 핵심 관심사 기준으로 실행 시점을 지정 -->
+	<aop:config>
+		<!-- 핵심관심사중 적용할 메서드 선택 : PointCut -->
+		<aop:pointcut id="helloPointCut" expression="execution(* app.labs.ex04..HelloService.sayHello(..))"/>
+		<aop:aspect ref="helloLog">
+			<aop:after method="log" pointcut-ref="helloPointCut"/>
+		</aop:aspect>
+	</aop:config>
+</beans>
