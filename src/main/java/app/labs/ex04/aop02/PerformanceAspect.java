@@ -1,4 +1,4 @@
-package app.labs.ex04.aop01;
+package app.labs.ex04.aop02;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;

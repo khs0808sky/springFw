@@ -19,6 +19,7 @@
 	
 	<!-- 공통관심사 : Aspect -->
 	<bean id="helloLog" class="app.labs.ex04.aop01.HelloLog" />
+	<bean id="performanceAspect" class="app.labs.ex04.aop01.PerformanceAspect" />
 	
 	<!-- AOP 설정 : 공통 관심사를 핵심 관심사 기준으로 실행 시점을 지정 -->
 	<aop:config>
@@ -26,6 +27,9 @@
 		<aop:pointcut id="helloPointCut" expression="execution(* app.labs.ex04..HelloService.sayHello(..))"/>
 		<aop:aspect ref="helloLog">
 			<aop:after method="log" pointcut-ref="helloPointCut"/>
+		</aop:aspect>
+		<aop:aspect ref="performanceAspect">
+			<aop:around method="trace" pointcut-ref="helloPointCut"/>
 		</aop:aspect>
 	</aop:config>
 </beans>
