@@ -4,7 +4,8 @@
 
 - [2025-07-21](#2025-07-21)
 - [2025-07-22](#2025-07-22)
-- [2025-07-23](#2025-07-23) 
+- [2025-07-23](#2025-07-23)
+- [2025-07-24](#2025-07-24)
 
 <br><br><br>
 
@@ -262,6 +263,111 @@
 | Read   | 데이터 조회 | `SELECT`                   |
 | Update | 데이터 수정 | `UPDATE ... SET ... WHERE` |
 | Delete | 데이터 삭제 | `DELETE FROM ... WHERE`    |
+
+---
+
+📅[목차로 돌아가기](#-목차)
+
+---
+
+# 2025-07-24
+
+---
+
+## 1. DB 테이블 정보를 기반으로 VO(Value Object) 클래스 작성
+
+* **무엇인가?**
+  DB 테이블의 컬럼 구조와 1:1로 매핑되는 자바 클래스. 데이터를 담는 용도이며, 계층 간 데이터 전달에 사용됨.
+
+* **특징**
+
+  * 테이블의 각 컬럼은 VO 클래스의 필드로 매핑됨
+  * 기본적으로 getter/setter, toString(), 생성자 등을 포함
+  * DB → 자바 객체 변환 (역시 자바 → DB 삽입 시도 가능)
+
+* **예시**
+
+  ```java
+  public class EmpVO {
+      private int empno;
+      private String ename;
+      private String job;
+      private int sal;
+      // getter, setter, toString 등
+  }
+  ```
+
+---
+
+## 2. 기능 설계를 위한 인터페이스 `IEmpRepository` 작성
+
+* **무엇인가?**
+  DB 연산을 추상화한 인터페이스로, CRUD 메서드들을 정의해 구현 클래스로 위임하기 위한 설계 단계.
+
+* **역할**
+
+  * EmpRepository가 반드시 구현해야 하는 메서드 목록 정의
+  * 예: `insertEmp(EmpVO vo)`, `findAll()`, `findByEmpno(int empno)` 등
+
+---
+
+## 3. 구현 클래스 `EmpRepository` 작성
+
+* **무엇인가?**
+  `IEmpRepository`를 구현하는 클래스. 실제 SQL 문을 작성하고 JDBC를 이용하여 DB 연동을 처리함.
+
+* **주요 내용**
+
+  * DB 연결, SQL 실행, 결과 처리까지 담당
+  * 반복되는 JDBC 코드들을 메서드로 분리 가능
+  * CRUD 중심으로 SQL 작성
+
+* **예시**
+
+  ```java
+  public class EmpRepository implements IEmpRepository {
+      public List<EmpVO> findAll() {
+          // JDBC로 SELECT * FROM emp 실행
+      }
+  }
+  ```
+
+---
+
+## 4. 클래스 간 관계 및 계층 구조
+
+```
+[EmpMain]
+   │
+   ▼
+[IEmpService] ←구현― [EmpService]
+   │
+   ▼
+[IEmpRepository] ←구현― [EmpRepository]
+   │
+   ▼
+ [EmpVO]  ← 데이터를 담고 전달함
+```
+
+### 각 클래스 설명
+
+| 클래스명               | 역할 설명                                          |
+| ------------------ | ---------------------------------------------- |
+| **EmpMain**        | 프로그램 실행 시작점, 사용자의 요청을 처리하고 서비스 호출              |
+| **EmpVO**          | DB의 데이터를 담는 VO 객체 (Value Object)               |
+| **IEmpRepository** | DAO 계층의 인터페이스. 데이터베이스와 연동하는 기능을 정의             |
+| **EmpRepository**  | 실제 JDBC 코드를 작성해 DB와 통신하는 구현 클래스                |
+| **IEmpService**    | 서비스 계층의 인터페이스. 비즈니스 로직의 추상화된 기능 정의             |
+| **EmpService**     | 비즈니스 로직 처리 클래스. Repository를 이용해 데이터 처리 및 로직 수행 |
+
+---
+
+## 전체 구조 요약 (MVC + Repository 구조 일부 반영)
+
+* **EmpMain** → 사용자와 인터랙션 / 흐름 제어
+* **Service 계층** → 비즈니스 로직 처리
+* **Repository 계층** → DB 접근 및 SQL 실행
+* **VO 객체** → 데이터 전달용
 
 ---
 
