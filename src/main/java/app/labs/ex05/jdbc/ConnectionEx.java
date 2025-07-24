@@ -16,7 +16,7 @@ public class ConnectionEx {
 		 	4. 사용할 데이터베이스 객체
 		 */
 		String jdbc = "oracle.jdbc.driver.OracleDriver";
-		String url = "jdbc:oracle:thin:@localhost:1521/xepdb1";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String uid = "SCOTT";
 		String pwd = "TIGER";
 		
