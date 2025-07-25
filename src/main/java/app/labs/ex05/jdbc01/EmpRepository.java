@@ -85,10 +85,10 @@ public class EmpRepository implements IEmpRepository {
 	@Override
 	public void updateEmp(EmpVO emp) {
 		String sql = "update employees "
-				+ "set first_name = ?, last_name = ?, email=? "
+				+ "set first_name = ?, last_name = ?, email=?, salary=? "
 				+ "where employee_id = ?";
 		
-		jdbcTemplate.update(sql, emp.getFirstName(), emp.getLastName(), emp.getEmail(),
+		jdbcTemplate.update(sql, emp.getFirstName(), emp.getLastName(), emp.getEmail(), emp.getSalary(),
 				emp.getEmployeeId());
 
 	}
