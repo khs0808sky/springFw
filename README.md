@@ -7,6 +7,7 @@
 - [2025-07-23](#2025-07-23)
 - [2025-07-24](#2025-07-24)
 - [2025-07-25](#2025-07-25)
+- [2025-07-28](#2025-07-28)
 
 <br><br><br>
 
@@ -461,4 +462,123 @@
 
 ---
 
+# 2025-07-28
+
+---
+
+## 1. 패키지 분리 구조
+
+**MVC 원칙에 따라 패키지를 역할별로 분리**
+
+```
+📦 project-root
+ ┣ 📂 controller       → 사용자 요청 처리
+ ┃ ┗ 📄 EmpController.java
+ ┣ 📂 dao              → DB 처리 (Repository)
+ ┃ ┣ 📄 EmpRepository.java
+ ┃ ┗ 📄 IEmpRepository.java
+ ┣ 📂 model            → 데이터 모델 (VO 클래스)
+ ┃ ┗ 📄 EmpVO.java
+ ┣ 📂 service          → 비즈니스 로직 처리
+ ┃ ┣ 📄 EmpService.java
+ ┃ ┗ 📄 IEmpService.java
+```
+
+* 역할이 명확하게 나뉘어 유지보수 및 협업에 용이
+* Spring의 DI(의존성 주입) 및 AOP 적용 시 구조화에 효과적
+
+---
+
+## 2. Controller 계층에 요청 처리 메서드 추가
+
+### ✅ 사원 수 조회 컨트롤러
+
+```java
+@RequestMapping(value = "/hr/count")
+public String empCount(@RequestParam(value = "deptid", required = false, defaultValue = "0") int deptId,
+                       Model model) {
+
+    if (deptId == 0) {
+        model.addAttribute("count", empService.getEmpCount()); // 전체 사원 수
+    } else {
+        model.addAttribute("count", empService.getEmpCount(deptId)); // 부서별 사원 수
+    }
+
+    return "hr/count"; // → /WEB-INF/views/hr/count.jsp
+}
+```
+
+### ✅ 전체 사원 목록 조회
+
+```java
+@RequestMapping(value = "/hr/list")
+public String empAllList(Model model) {
+    List<EmpVO> empList = empService.getEmpList();
+    model.addAttribute("empList", empList);
+
+    return "hr/list";
+}
+```
+
+### ✅ 사원 상세 정보 조회
+
+```java
+@RequestMapping(value = "/hr/{employeeId}")
+public String getEmpInfo(@PathVariable int employeeId, Model model) {
+    EmpVO emp = empService.getEmpInfo(employeeId);
+    model.addAttribute("emp", emp);
+
+    return "hr/view";
+}
+```
+
+---
+
+## 3. JSP 뷰에서 모델 데이터 출력
+
+### 📄 `count.jsp` 예시
+
+```jsp
+<h1>사원 수: ${count}</h1>
+```
+
+* Spring에서 `Model` 객체에 저장한 `"count"`를 JSP에서 EL(Expression Language)로 출력
+* 요청 URL: `/hr/count` (기본 전체), `/hr/count?deptid=10` (10번 부서)
+
+---
+
+## 4. 전체 흐름 요약 (요청 → 처리 → 응답)
+
+```
+[브라우저 요청: /hr/count?deptid=10]
+        ↓
+[EmpController]
+  ↓    - 요청 파라미터 분석
+  ↓    - empService 호출
+[EmpService]
+  ↓    - 비즈니스 로직 수행
+  ↓    - empRepository 통해 DB에서 데이터 조회
+[EmpRepository]
+  ↓    - JDBC or MyBatis 이용 SQL 실행
+[DB 조회 완료 → VO 반환]
+        ↓
+[EmpService → Controller → Model에 저장]
+        ↓
+[View: JSP로 forward → ${count} 출력]
+```
+
+---
+
+## 5. 보충 개념: @RequestParam vs @PathVariable
+
+| 어노테이션           | 설명                       | 예시                    |
+| --------------- | ------------------------ | --------------------- |
+| `@RequestParam` | 쿼리스트링 (?key=value) 값을 받음 | `/hr/count?deptid=10` |
+| `@PathVariable` | URL 경로 내 값을 바인딩          | `/hr/1001`            |
+
+---
+
+📅[목차로 돌아가기](#-목차)
+
+---
 
