@@ -1,36 +1,39 @@
 package app.labs.project.player;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PlayerService implements IPlayerService {
 
-	Player player = new Player();
+	PlayerVO player = new PlayerVO();
+	@Autowired
+	IPlayerRepository playerRepository;
 	
 	@Override
 	public void click() {
-		player.click();
+		playerRepository.click();
 	}
 
 	@Override
 	public void levelUp() {
-		player.levelUp();
+		playerRepository.levelUp();
 
 	}
 
 	@Override
 	public boolean buyCar() {
-		return player.buyCar();
+		return playerRepository.buyCar();
 	}
 
 	@Override
 	public boolean buyHouse() {
-		return player.buyHouse();
+		return playerRepository.buyHouse();
 	}
 
 	@Override
 	public boolean buyClothes() {
-		return player.buyClothes();
+		return playerRepository.buyClothes();
 	}
 
 }
