@@ -1,4 +1,4 @@
-package app.labs.project;
+package app.labs.project.player;
 
 public interface IPlayerService {
 	void click();

@@ -1,4 +1,4 @@
-package app.labs.project;
+package app.labs.project.player;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

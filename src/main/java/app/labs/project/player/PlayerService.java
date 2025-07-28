@@ -1,4 +1,4 @@
-package app.labs.project;
+package app.labs.project.player;
 
 import org.springframework.stereotype.Service;
 
