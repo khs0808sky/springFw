@@ -40,10 +40,10 @@
 		    <td>
 		    	<select name="jobId">
 		    		<c:forEach var="job" items="${jobList }">
-		    			<c:if test="${emp.JOBID == job.JOBID }">
+		    			<c:if test="${emp.jobId == job.JOBID }">
 		    			<option value="${job.JOBID }" selected>${job.jobTitle }</option>
 		    			</c:if>
-		    			<c:if test="${emp.JOBID != job.JOBID }">
+		    			<c:if test="${emp.jobId != job.JOBID }">
 		    			<option value="${job.JOBID }">${job.jobTitle }</option>
 		    			</c:if>
 		    		</c:forEach>		
