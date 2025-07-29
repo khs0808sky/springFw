@@ -14,4 +14,7 @@ public class PlayerVO {
 	private int playerMoney = 0;
     private int playerLevel = 1;
     private int playerClickPower = 1;
+    private String carName;
+    private String HouseName;
+    private String clothesName;
 }

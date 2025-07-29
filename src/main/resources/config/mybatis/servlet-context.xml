@@ -9,11 +9,10 @@
 
 	<annotation-driven /> <!-- 스프링 MVC 기본 컴포넌트 설정을 활성화 -->
 	
-	<resources mapping="/js/**" location="/WEB-INF/assets/js/" />
-	<resources mapping="/images/**" location="/WEB-INF/assets/images/" />
+	<resources mapping="/assets/**" location="/classes/assets/" />
 	
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<beans:property name="prefix" value="/WEB-INF/views/mvc02/" />
+		<beans:property name="prefix" value="/WEB-INF/classes/views/mybatis/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
@@ -40,6 +39,6 @@
         </beans:property>
     </beans:bean>
 	
-	<context:component-scan base-package="app.labs.ex06.mvc02" />
+	<context:component-scan base-package="app.labs.ex08.mybatis.hr" />
 	
 </beans:beans>

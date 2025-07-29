@@ -1,4 +1,4 @@
-package app.labs.ex06.mvc02.controller;
+package app.labs.ex08.mybatis.hr.controller;
 
 import java.util.List;
 
@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import app.labs.ex06.mvc02.model.EmpVO;
-import app.labs.ex06.mvc02.service.IEmpService;
+import app.labs.ex08.mybatis.hr.model.EmpVO;
+import app.labs.ex08.mybatis.hr.service.IEmpService;
+
 
 @Controller
 public class EmpController {

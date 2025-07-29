@@ -17,6 +17,6 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<context:component-scan base-package="app.labs.ex06.project" />
+	<context:component-scan base-package="app.labs.project" />
 	
 </beans:beans>
