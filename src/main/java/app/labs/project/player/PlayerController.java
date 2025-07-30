@@ -17,15 +17,15 @@ public class PlayerController {
         playerService.levelUp();
     }
     
-    public boolean buyCar() {
-    	return playerService.buyCar();
+    public boolean buyCar(Car car) {
+    	return playerService.buyCar(car);
     }
     
-    public boolean buyHouse() {
-    	return playerService.buyHouse();
+    public boolean buyHouse(House house) {
+    	return playerService.buyHouse(house);
     }
     
-    public boolean buyClothes() {
-    	return playerService.buyClothes();
+    public boolean buyClothes(Clothes clothes) {
+    	return playerService.buyClothes(clothes);
     }
 }
